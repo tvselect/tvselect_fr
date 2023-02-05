@@ -7,5 +7,5 @@ do
     _jq() {
      echo ${row} | base64 --decode | jq -r ${1}
     }
-    echo "tzap -t $(_jq '.duration') -o $(_jq '.title') '$(_jq '.channel')' >> /var/tmp/cron_launch_record.log 2>&1" | at $(_jq '.start')
+    echo "tzap -t $(_jq '.duration') -o $(_jq '.title') \"$(_jq '.channel')\" >> /var/tmp/cron_launch_record.log 2>&1" | at $(_jq '.start')
 done
