@@ -1,10 +1,6 @@
-import readline
 import subprocess
 import random
 import getpass
-from datetime import datetime
-
-import pdb
 
 cmd = "timedatectl | grep -i 'Time zone' | tr -s ' ' | cut -d ' ' -f4"
 output = subprocess.Popen(
@@ -13,25 +9,31 @@ output = subprocess.Popen(
 stdout, stderr = output.communicate()
 timezone = stdout.decode("utf-8")[:-1]
 
-answers = ['oui', 'non']
+answers = ["oui", "non"]
 answer = "maybe"
 
-if timezone != 'Europe/Paris':
-    print("Le fuseau horaire de votre box TV est {timezone}. Le fuseau horaire qui "
-          "doit être configuré est 'Europe/Paris'. Si vous ne voulez pas changer de "
-          "fuseau horaire, contactez-nous pour configurer votre box TV afin de "
-          "pouvoir l'utiliser avec un fuseau horaire différent "
-          "de 'Europe/Paris'.".format(timezone=timezone))
+if timezone != "Europe/Paris":
+    print(
+        "Le fuseau horaire de votre box TV est {timezone}. Le fuseau horaire qui "
+        "doit être configuré est 'Europe/Paris'. Si vous ne voulez pas changer de "
+        "fuseau horaire, contactez-nous pour configurer votre box TV afin de "
+        "pouvoir l'utiliser avec un fuseau horaire différent "
+        "de 'Europe/Paris'.".format(timezone=timezone)
+    )
     while answer.lower() not in answers:
-        answer = input("Voulez-vous changer le fuseau horaire pour 'Europe/Paris'?"
-                   " (répondre oui ou non): ")
+        answer = input(
+            "Voulez-vous changer le fuseau horaire pour 'Europe/Paris'?"
+            " (répondre oui ou non): "
+        )
     if answer.lower() == "oui":
         cmd = "sudo timedatectl set-timezone Europe/Paris"
         timezo = subprocess.Popen(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
         )
         timezo.wait()
-        print("\nImportant: Veuillez rédemarrer la box TV puis relancer le programme install.py\n")
+        print(
+            "\nImportant: Veuillez rédemarrer la box TV puis relancer le programme install.py\n"
+        )
         exit()
     else:
         exit()
@@ -105,7 +107,6 @@ user = stdout.decode("utf-8")[:-1]
 authprog_response = "403"
 
 while authprog_response != "200":
-
     with open("/home/" + user + "/.netrc", "r") as file:
         lines = file.read().splitlines()
 
@@ -126,9 +127,7 @@ while authprog_response != "200":
         for line in lines:
             file.write(line + "\n")
 
-    cmd = 'curl -iSn https://www.tv-select.fr/api/v1/prog | grep HTTP | cut -d " " -f 2'.format(
-        username=username, password_tvrecord=password_tvrecord
-    )
+    cmd = 'curl -iSn https://www.tv-select.fr/api/v1/prog | grep HTTP | cut -d " " -f 2'
     authprog = subprocess.Popen(
         cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
     )
@@ -244,8 +243,6 @@ curl = (
         user=user,
         minute=minute,
         heure=heure,
-        username=username,
-        password_tvrecord=password_tvrecord,
     )
 )
 
